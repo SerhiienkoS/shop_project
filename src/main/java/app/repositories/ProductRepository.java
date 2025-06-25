@@ -6,13 +6,15 @@ import java.util.List;
 
 public interface ProductRepository {
 
+    //CRUD - Create, Read, Update, Delete
+
     Product save(Product product);
 
-    List<Product> getAll();
+    List<Product> findAll();
 
-    List<Product> getById(Product product);
+    Product findById(Long id);
 
-    Product getById(Long id);
+    boolean deleteById(Long id);
 
-    //TODO
+    Product updateById(Product product);
 }
