@@ -5,7 +5,7 @@ import app.service.ProductService;
 
 import java.util.List;
 
-public abstract class ProductController {
+public  class ProductController {
     private final ProductService productService;
 
     public ProductController(ProductService productService) {

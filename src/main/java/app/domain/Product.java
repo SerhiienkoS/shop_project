@@ -69,13 +69,16 @@ public class Product {
         return Objects.hash(id, isActive, name, price);
     }
 
+
     @Override
     public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", isActive=" + isActive +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                '}';
+        return "\nProduct {\n" +
+                "  id        = " + id + ",\n" +
+                "  isActive  = " + isActive + ",\n" +
+                "  name      = '" + name + "',\n" +
+                "  price     = " + price + "\n" +
+                "}";
     }
+
 }
+
