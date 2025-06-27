@@ -8,6 +8,17 @@ public class Product {
     private String name;
     private double price;
 
+    public Product(Long id, String name, double price) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+    }
+
+    public Product(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+
     public Product(boolean isActive, String name, double price) {
         this.isActive = isActive;
         this.name = name;
