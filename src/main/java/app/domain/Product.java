@@ -3,24 +3,24 @@ package app.domain;
 import java.util.Objects;
 
 public class Product {
-    private Long id;
+    private  Long id;
     private boolean isActive;
     private String name;
     private double price;
 
-    public Product(boolean isActive, String name, double price) {
+    public Product( boolean isActive, String name, double price) {
         this.isActive = isActive;
+        this.name = name;
+        this.price = price;
+    }
+
+    public Product(String name, double price) {
         this.name = name;
         this.price = price;
     }
 
     public Product(Long id, String name, double price) {
         this.id = id;
-        this.name = name;
-        this.price = price;
-    }
-
-    public Product(String name, double price) {
         this.name = name;
         this.price = price;
     }
@@ -71,10 +71,13 @@ public class Product {
 
     @Override
     public String toString() {
-        return "\u001B[32m"+"                            Product: " +
-                "id=" + id +
-                ", isActive=" + isActive +
-                ", name='" + name + '\'' +
-                ", price=" + price  + "\u001B[0m";
+        final StringBuffer sb = new StringBuffer("        \u001B[32m                 Product : ");
+        sb.append("     id : ").append(id);
+        sb.append("     | isActive: ").append(isActive);
+        sb.append("     | name: ").append(name) ;
+        sb.append("     | price : ").append(price);
+        sb.append("\u001B[0m");
+
+        return sb.toString();
     }
 }

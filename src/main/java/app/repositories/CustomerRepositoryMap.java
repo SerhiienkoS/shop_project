@@ -1,7 +1,6 @@
 package app.repositories;
 
 import app.domain.Customer;
-import app.domain.Product;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,24 +33,22 @@ public class CustomerRepositoryMap implements CustomerRepository {
     public Customer update(Customer customer) {
         Long id = customer.getId();
         String newName = customer.getName();
+        Customer oldCustomer = findById(id);
+        if (oldCustomer != null) {
+            oldCustomer.setName(newName);
 
-        Customer oldProduct = findById(id);
-
-        if (oldProduct != null) {
-            oldProduct.setName(newName);
         }
-
-        return oldProduct;
+        return oldCustomer;
     }
 
     @Override
     public boolean deleteById(Long id) {
-        Customer oldProduct = findById(id);
-
-        if (oldProduct == null) {
+        Customer oldCustomer = findById(id);
+        if(oldCustomer == null){
             return false;
         }
-        oldProduct.setActive(false);
+        oldCustomer.setActive(false);
         return true;
     }
+
 }

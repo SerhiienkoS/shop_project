@@ -1,4 +1,4 @@
-package app.service;
+package app.services;
 
 import app.domain.Product;
 import app.exceptions.ProductNotFoundException;
@@ -6,16 +6,18 @@ import app.exceptions.ProductSaveException;
 import app.exceptions.ProductUpdateException;
 import app.repositories.ProductRepository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ProductServiceImpl implements ProductService {
-
     private final ProductRepository repository;
 
     public ProductServiceImpl(ProductRepository repository) {
         this.repository = repository;
     }
+
 
     @Override
     public Product save(Product product) {
@@ -27,28 +29,30 @@ public class ProductServiceImpl implements ProductService {
         if (name == null || name.trim().isEmpty() || name.length() < 3) {
             throw new ProductSaveException("Product name should be at least 3 characters long");
         }
-
         if (product.getPrice() <= 0) {
-            throw new ProductSaveException("Product price cannot be negative and zero");
-        }
+            throw new ProductSaveException("Product price cannot be negative or zero");
 
+        }
         product.setActive(true);
         return repository.save(product);
+
     }
 
     @Override
     public List<Product> getAllActiveProducts() {
-        return repository.findAll().stream()
-                .filter(x -> x.isActive())
+        return repository.findAll()
+                .stream()
+                .filter(product -> product.isActive())
                 .collect(Collectors.toList());
+
+
     }
 
     @Override
     public Product getById(Long id) {
         Product product = repository.findById(id);
-
         if (product == null || !product.isActive()) {
-            throw new ProductNotFoundException("Product with id = " + id + " not found");
+            throw new ProductNotFoundException("Product with id " + id + " not found");
         }
         return product;
     }
@@ -58,27 +62,28 @@ public class ProductServiceImpl implements ProductService {
         if (product == null) {
             throw new ProductUpdateException("Product cannot be null");
         }
-
         Long id = product.getId();
         if (id == null || id < 0) {
-            throw new ProductUpdateException("Product id should be positive");
-        }
+            throw new ProductUpdateException("Product ID should be positive");
 
+        }
         String name = product.getName();
         if (name == null || name.trim().isEmpty() || name.length() < 3) {
             throw new ProductUpdateException("Product name should be at least 3 characters long");
         }
-
         if (product.getPrice() <= 0) {
-            throw new ProductUpdateException("Product price cannot be negative and zero");
+            throw new ProductUpdateException("Product price cannot be negative or zero");
+
         }
 
-        repository.updateById(product);
+        repository.updateProduct(product);
+
     }
 
     @Override
     public void deleteById(Long id) {
         getById(id).setActive(false);
+
     }
 
     @Override
@@ -88,40 +93,44 @@ public class ProductServiceImpl implements ProductService {
                 .filter(p -> p.getName().equals(name))
                 .findFirst()
                 .orElse(null);
-
-        if (product == null) {
-            throw new ProductNotFoundException("Product with name = " + name + " nor found");
+        if (product == null ) {
+            throw new ProductNotFoundException("Product with name " + name + " not found");
         }
+
         product.setActive(false);
     }
 
+
+
     @Override
     public void restoreById(Long id) {
-        Product product = repository.findById(id);
 
+        Product product = repository.findById(id);
         if (product == null) {
-            throw new ProductNotFoundException("Product with id = " + id + " not found");
+            throw new ProductNotFoundException("Product with id " + id + " not found");
         }
         product.setActive(true);
     }
 
     @Override
     public long getActiveProductsTotalCount() {
-        return getAllActiveProducts().size();
+       return getAllActiveProducts().size();
     }
 
     @Override
     public double getActiveProductsTotalCost() {
-        return getAllActiveProducts().stream()
-                .mapToDouble(p -> p.getPrice())
+        return getAllActiveProducts()
+                .stream()
+                .mapToDouble(Product::getPrice)
                 .sum();
     }
 
     @Override
     public double getActiveProductsAveragePrice() {
-        return getAllActiveProducts().stream()
-                .mapToDouble(p -> p.getPrice())
+        return getAllActiveProducts()
+                .stream()
+                .mapToDouble(Product::getPrice)
                 .average()
-                .orElse(0);
+                .orElse(0.0);
     }
 }

@@ -5,7 +5,6 @@ import app.domain.Product;
 import java.util.List;
 
 public interface ProductRepository {
-
     //CRUD - Create, Read, Update, Delete
 
     Product save(Product product);
@@ -14,7 +13,9 @@ public interface ProductRepository {
 
     Product findById(Long id);
 
+    Product updateProduct(Product updatedProduct);
+
     boolean deleteById(Long id);
 
-    Product updateById(Product product);
+
 }

@@ -1,17 +1,26 @@
 package app.domain;
 
+//POJO - Plain Old Java Object
+/*
+POJO (Plain Old Java Object) — это обычный Java-объект,
+который не зависит от каких-либо специфических фреймворков или интерфейсов.
+Он может содержать любое количество полей и методов, которые не обязательно должны быть приватными или публичными.
+POJO обычно используется для инкапсуляции бизнес-логики в приложениях
+*/
+
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-//POJO - Plain Old Java Object
 public class Customer {
-    private Long id;
+    private  Long id;
     private boolean isActive;
     private String name;
     private final List<Product> products = new ArrayList<>();
 
     public Customer(boolean isActive, String name) {
+
         this.isActive = isActive;
         this.name = name;
     }
@@ -57,12 +66,14 @@ public class Customer {
     }
 
     @Override
-    public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", isActive=" + isActive +
-                ", name='" + name + '\'' +
-                ", products=" + products +
-                '}';
+    public String
+    toString() {
+        final StringBuffer sb = new StringBuffer("Customer{");
+        sb.append("id=").append(id);
+        sb.append(", isActive=").append(isActive);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", products=").append(products);
+        sb.append('}');
+        return sb.toString();
     }
 }
