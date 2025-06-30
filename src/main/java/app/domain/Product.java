@@ -8,6 +8,12 @@ public class Product {
     private String name;
     private double price;
 
+    public Product(boolean isActive, String name, double price) {
+        this.isActive = isActive;
+        this.name = name;
+        this.price = price;
+    }
+
     public Product(Long id, String name, double price) {
         this.id = id;
         this.name = name;
@@ -15,12 +21,6 @@ public class Product {
     }
 
     public Product(String name, double price) {
-        this.name = name;
-        this.price = price;
-    }
-
-    public Product(boolean isActive, String name, double price) {
-        this.isActive = isActive;
         this.name = name;
         this.price = price;
     }
@@ -69,16 +69,12 @@ public class Product {
         return Objects.hash(id, isActive, name, price);
     }
 
-
     @Override
     public String toString() {
-        return "\nProduct {\n" +
-                "  id        = " + id + ",\n" +
-                "  isActive  = " + isActive + ",\n" +
-                "  name      = '" + name + "',\n" +
-                "  price     = " + price + "\n" +
-                "}";
+        return "\u001B[32m"+"                            Product: " +
+                "id=" + id +
+                ", isActive=" + isActive +
+                ", name='" + name + '\'' +
+                ", price=" + price  + "\u001B[0m";
     }
-
 }
-

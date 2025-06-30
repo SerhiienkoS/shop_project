@@ -6,10 +6,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ProductRepositoryMap implements ProductRepository {
 
-    private Map<Long, Product> database = new HashMap<>();
+    private final Map<Long, Product> database = new HashMap<>();
 
     private long currentId = 0;
 
@@ -36,7 +37,13 @@ public class ProductRepositoryMap implements ProductRepository {
 
     @Override
     public boolean deleteById(Long id) {
-        return false; // Todo use update
+        Product oldProduct = findById(id);
+
+        if (oldProduct == null) {
+            return false;
+        }
+        oldProduct.setActive(false);
+        return true;
     }
 
     @Override
@@ -44,35 +51,35 @@ public class ProductRepositoryMap implements ProductRepository {
         Long id = product.getId();
         double newPrice = product.getPrice();
         String newName = product.getName();
-        boolean newActive = product.isActive();
 
         Product oldProduct = findById(id);
+
         if (oldProduct != null) {
             oldProduct.setName(newName);
             oldProduct.setPrice(newPrice);
-            oldProduct.setActive(newActive);
         }
+
         return oldProduct;
     }
-
-
+//
 //    public static void main(String[] args) {
-//        ProductRepository repository = new productRepositoryMap();
+//        ProductRepository repository = new ProductRepositoryMap();
+//
 //        System.out.println(repository.save(new Product(true, "Coffee", 3)));
+//        //TODO check null field name
+////        System.out.println(repository.save("cat"));
+//        System.out.println(repository.save(new Product(false, "Baget", 4)));
 //
 //        System.out.println(repository.findAll());
 //
-//        System.out.println(repository.save(new Product(false, "Bagget", 4)));
-//
 //        System.out.println(repository.findById(2L));
 //
-//        System.out.println("============== Delete ============== ");
+//        System.out.println("=========== Delete ==============");
 //        repository.deleteById(1L);
 //        System.out.println(repository.findById(1L));
-//        System.out.println("============== Update ============== ");
-//        Product newProduct = new Product(true,"Baggette",7);
-//        newProduct.setId(2l);
+//        System.out.println("=========== Update ==============");
+//        Product newProduct = new Product(true, "Baguette", 7);
+//        newProduct.setId(2L);
 //        System.out.println(repository.updateById(newProduct));
-//
 //    }
 }

@@ -1,8 +1,9 @@
 package app.service;
 
 import app.domain.Product;
-import app.exceptions.ProductSaveExceptions;
-import app.exceptions.ProductUpdateExcrption;
+import app.exceptions.ProductNotFoundException;
+import app.exceptions.ProductSaveException;
+import app.exceptions.ProductUpdateException;
 import app.repositories.ProductRepository;
 
 import java.util.List;
@@ -19,15 +20,18 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product save(Product product) {
         if (product == null) {
-            throw new ProductSaveExceptions("Product cannot be null");
+            throw new ProductSaveException("Product cannot be null");
         }
+
         String name = product.getName();
-        if (name == null || name.trim().isEmpty() || name.length() < 3) { // trim - убирает пробелы в начале ив конце
-            throw new ProductSaveExceptions("Product name shuld be at least 3 characters long");
+        if (name == null || name.trim().isEmpty() || name.length() < 3) {
+            throw new ProductSaveException("Product name should be at least 3 characters long");
         }
+
         if (product.getPrice() <= 0) {
-            throw new ProductSaveExceptions("Product price cannot be negative and zero");
+            throw new ProductSaveException("Product price cannot be negative and zero");
         }
+
         product.setActive(true);
         return repository.save(product);
     }
@@ -44,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = repository.findById(id);
 
         if (product == null || !product.isActive()) {
-            throw new ProductSaveExceptions("Product with id = " + id + "not found");
+            throw new ProductNotFoundException("Product with id = " + id + " not found");
         }
         return product;
     }
@@ -52,21 +56,23 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void update(Product product) {
         if (product == null) {
-            throw new ProductUpdateExcrption("Product cannot be null");
+            throw new ProductUpdateException("Product cannot be null");
         }
 
         Long id = product.getId();
         if (id == null || id < 0) {
-            throw new ProductUpdateExcrption("Product cannot be positive");
+            throw new ProductUpdateException("Product id should be positive");
         }
 
         String name = product.getName();
-        if (name == null || name.trim().isEmpty() || name.length() < 3) { // trim - убирает пробелы в начале ив конце
-            throw new ProductUpdateExcrption("Product name shuld be at least 3 characters long");
+        if (name == null || name.trim().isEmpty() || name.length() < 3) {
+            throw new ProductUpdateException("Product name should be at least 3 characters long");
         }
+
         if (product.getPrice() <= 0) {
-            throw new ProductUpdateExcrption("Product price cannot be negative and zero");
+            throw new ProductUpdateException("Product price cannot be negative and zero");
         }
+
         repository.updateById(product);
     }
 
@@ -83,15 +89,20 @@ public class ProductServiceImpl implements ProductService {
                 .findFirst()
                 .orElse(null);
 
-        if (product == null || !product.isActive()) {
-            throw new ProductSaveExceptions("Product with name = " + name + "not found");
+        if (product == null) {
+            throw new ProductNotFoundException("Product with name = " + name + " nor found");
         }
         product.setActive(false);
     }
 
     @Override
     public void restoreById(Long id) {
-        getById(id).setActive(true);
+        Product product = repository.findById(id);
+
+        if (product == null) {
+            throw new ProductNotFoundException("Product with id = " + id + " not found");
+        }
+        product.setActive(true);
     }
 
     @Override

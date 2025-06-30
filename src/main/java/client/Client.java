@@ -8,9 +8,9 @@ import app.service.ProductService;
 import app.service.ProductServiceImpl;
 
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 public class Client {
+
     private static Scanner scanner;
     private static ProductController productController;
 
@@ -23,16 +23,16 @@ public class Client {
 
         scanner = new Scanner(System.in);
 
-        while (true){
+        while (true) {
             try {
-                System.out.println("Выбирите действие: ");
-                System.out.println("1. Операции с продуктами: ");
-                System.out.println("2. Операции с покупателями: ");
-                System.out.println("0. Выход: ");
+                System.out.println("Выберите действие: ");
+                System.out.println("1. Операции с продуктами");
+                System.out.println("2. Операции с покупателями");
+                System.out.println("0. Выход");
                 System.out.println("Ваш выбор: ");
 
                 int choice = Integer.parseInt(scanner.nextLine());
-                switch (choice){
+                switch (choice) {
                     case 1:
                         productOperations();
                         break;
@@ -46,21 +46,22 @@ public class Client {
                         break;
                 }
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.err.println(e.getMessage());
             }
         }
     }
-    private static void productOperations(){
-        while (true){
+
+    private static void productOperations() {
+        while (true) {
             try {
                 System.out.println("Выберете действие с продуктом: ");
                 System.out.println("1. Сохранение продукта");
                 System.out.println("2. Получение всех активных продуктов");
                 System.out.println("3. Получение одного продукта по ID");
-                System.out.println("4. Изменение одного продукта по");
+                System.out.println("4. Изменение одного продукта");
                 System.out.println("5. Удаление одного продукта по ID");
-                System.out.println("6. Удаление одного продукта по найменованию");
+                System.out.println("6. Удаление одного продукта по наименованию");
                 System.out.println("7. Восстановление одного продукта по ID");
                 System.out.println("8. Получение количества продуктов");
                 System.out.println("9. Получение общей стоимости продуктов");
@@ -70,14 +71,14 @@ public class Client {
 
                 int choice = Integer.parseInt(scanner.nextLine());
 
-                switch (choice){
+                switch (choice) {
                     case 1:
                         System.out.println("Введите наименование продукта: ");
                         String name = scanner.nextLine();
                         System.out.println("Введите цену продукта");
                         double price = Double.parseDouble(scanner.nextLine());
 
-                        Product product = productController.save(name,price);
+                        Product product = productController.save(name, price);
                         System.out.println("Сохраненный продукт: ");
                         System.out.println(product);
                         break;
@@ -99,23 +100,27 @@ public class Client {
                         System.out.println("Введите цену продукта");
                         price = Double.parseDouble(scanner.nextLine());
 
-                        productController.update(id,name,price);
+                        productController.update(id, name, price);
                         break;
                     case 5:
                         System.out.println("Введите ID продукта: ");
                         id = Long.parseLong(scanner.nextLine());
                         productController.deleteById(id);
+                        break;
                     case 6:
                         System.out.println("Введите наименование продукта: ");
                         name = scanner.nextLine();
                         productController.deleteByName(name);
+                        break;
                     case 7:
                         System.out.println("Введите ID продукта: ");
                         id = Long.parseLong(scanner.nextLine());
                         productController.restoreById(id);
+                        break;
                     case 8:
-                        System.out.println("общее количество продуктов "
+                        System.out.println("Общее количество продуктов: "
                                 + productController.getActiveProductsTotalCount());
+                        break;
                     case 9:
                         System.out.println("Общая стоимость продуктов: "
                                 + productController.getActiveProductsTotalCost());
@@ -131,14 +136,12 @@ public class Client {
                         break;
                 }
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.err.println(e.getMessage());
             }
         }
     }
 
-    private static void customerOperations(){
-
+    private static void customerOperations() {
     }
-
 }
